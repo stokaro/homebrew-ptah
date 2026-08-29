@@ -13,7 +13,12 @@ class PtahEdge < Formula
 
   depends_on "go" => :build
 
-  conflicts_with "ptah", because: "both install the ptah, ptah-compat, and ptah-ls binaries"
+  # Qualified, not the bare "ptah". Measured on Homebrew 6.0.20: a bare name is
+  # resolved against homebrew-core first, so before the first release publishes
+  # Formula/ptah.rb an install prints `No available formula with the name "ptah"`
+  # and advises deleting this line. The qualified name resolves inside the tap
+  # and is quiet whether or not that file exists yet.
+  conflicts_with "stokaro/ptah/ptah", because: "both install the ptah, ptah-compat, and ptah-ls binaries"
 
   def install
     # The release build sets this, and ptah's SQLite driver is modernc.org/sqlite,

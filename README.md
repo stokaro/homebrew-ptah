@@ -4,7 +4,10 @@ The Homebrew tap for [Ptah](https://github.com/stokaro/ptah), open-source
 database change management for schemas, migrations, data, and persistent
 inference state.
 
-## Install
+Two formulas live here. `ptah` is the released version; `ptah-edge` is the
+current `master`.
+
+## Install a release
 
 ```bash
 brew install stokaro/ptah/ptah
@@ -17,9 +20,56 @@ brew tap stokaro/ptah
 brew install ptah
 ```
 
-## What the formula installs
+Upgrade with `brew update && brew upgrade ptah`.
 
-The `ptah` formula installs all three Ptah binaries from one release archive:
+## Install edge
+
+`ptah-edge` tracks the tip of `master`, the same source the
+[edge documentation](https://stokaro.github.io/ptah/edge/) is built from. It is
+head-only, so the `--HEAD` flag is required:
+
+```bash
+brew install --HEAD stokaro/ptah/ptah-edge
+```
+
+It has no bottle and is compiled on your machine. Homebrew installs Go as a
+build dependency, and the build took 41 seconds on an arm64 Mac with a cold Go
+build cache, 11 with a warm one.
+
+The binaries report the commit they came from, so you can tell exactly what you
+are running:
+
+```console
+$ ptah version
+Version: HEAD-6eb18bd
+Commit: 6eb18bd8519aedcbb3a5a9c97bc2bffdd711cf3d
+Date: 2026-08-29T16:20:58Z
+Go: go1.27.0
+Platform: darwin/arm64
+```
+
+`master` moves many times a day, and Homebrew does not re-resolve a head
+formula unless you ask it to. Pick up a newer `master` with:
+
+```bash
+brew upgrade --fetch-HEAD ptah-edge
+```
+
+Edge is the development tip, not a release: it carries commands and behavior no
+released version has, and it is not covered by the release verification that a
+tag goes through.
+
+## Only one of the two at a time
+
+Both formulas install the same three binaries, so they conflict and Homebrew
+refuses to have both linked. Switch with:
+
+```bash
+brew uninstall ptah && brew install --HEAD stokaro/ptah/ptah-edge   # release -> edge
+brew uninstall ptah-edge && brew install stokaro/ptah/ptah          # edge -> release
+```
+
+## What the formulas install
 
 | Binary | What it is |
 | --- | --- |
@@ -27,7 +77,7 @@ The `ptah` formula installs all three Ptah binaries from one release archive:
 | `ptah-compat` | a drop-in replacement for the Atlas CLI |
 | `ptah-ls` | the language server |
 
-Each one reports the release it came from:
+Each one reports its build:
 
 ```bash
 ptah version
@@ -35,22 +85,19 @@ ptah-compat version
 ptah-ls --version
 ```
 
-## Upgrade
+## Which file is generated and which is not
 
-```bash
-brew update
-brew upgrade ptah
-```
-
-## Where `Formula/ptah.rb` comes from
-
-The formula is generated, not written by hand. Its source is the `brews:`
-section of
+`Formula/ptah.rb` is generated. Its source is the `brews:` section of
 [`.goreleaser.yaml`](https://github.com/stokaro/ptah/blob/master/.goreleaser.yaml)
 in the Ptah repository, and the `Release` workflow pushes the rendered file here
-on every version tag. Editing it in this repository changes nothing beyond the
-next release, which overwrites it — a change to what the formula installs
-belongs in that file instead.
+on every version tag. Editing it here changes nothing beyond the next release,
+which overwrites it.
+
+`Formula/ptah-edge.rb` is written by hand. GoReleaser writes one path and only
+that one, so this file survives a release — and nothing regenerates it either.
+When the release build changes (ldflags, `CGO_ENABLED`, the set of binaries),
+change it here in the same pull request, or the edge build stops matching the
+release it is the edge of.
 
 ## Other ways to install Ptah
 
@@ -62,7 +109,7 @@ Container images are published to `ghcr.io/stokaro/ptah`.
 
 ## Issues
 
-Report a problem with the formula, and everything else about Ptah, in the
+Report a problem with either formula, and everything else about Ptah, in the
 [Ptah issue tracker](https://github.com/stokaro/ptah/issues). This repository
 carries no code of its own.
 
