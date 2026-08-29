@@ -52,5 +52,7 @@ class Ptah < Formula
     end
   end
 
-  conflicts_with "stokaro/ptah/ptah-edge"
+  def caveats
+    "ptah-edge installs the same three binaries from master. Install only one of\nthe two: brew uninstall ptah-edge before installing this one."
+  end
 end

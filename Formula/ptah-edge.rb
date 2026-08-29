@@ -13,12 +13,17 @@ class PtahEdge < Formula
 
   depends_on "go" => :build
 
-  # Qualified, not the bare "ptah". Measured on Homebrew 6.0.20: a bare name is
-  # resolved against homebrew-core first, so before the first release publishes
-  # Formula/ptah.rb an install prints `No available formula with the name "ptah"`
-  # and advises deleting this line. The qualified name resolves inside the tap
-  # and is quiet whether or not that file exists yet.
-  conflicts_with "stokaro/ptah/ptah", because: "both install the ptah, ptah-compat, and ptah-ls binaries"
+  # Not conflicts_with. Homebrew loads the named formula to evaluate a
+  # conflict, and `brew install <tap>/<formula>` trusts only the formula it was
+  # given, so declaring one here made `brew install --HEAD stokaro/ptah/ptah-edge`
+  # fail on an untrusted tap with "Refusing to load formula stokaro/ptah/ptah".
+  # Measured on Homebrew 6.0.20; it broke both directions at once. A caveat is a
+  # string and loads nothing.
+  def caveats
+    "ptah installs the same three binaries from the newest release. Install only
+one of the two: brew uninstall ptah before installing this one."
+  end
+
 
   def install
     # The release build sets this, and ptah's SQLite driver is modernc.org/sqlite,
