@@ -96,8 +96,17 @@ which overwrites it.
 `Formula/ptah-edge.rb` is written by hand. GoReleaser writes one path and only
 that one, so this file survives a release — and nothing regenerates it either.
 When the release build changes (ldflags, `CGO_ENABLED`, the set of binaries),
-change it here in the same pull request, or the edge build stops matching the
-release it is the edge of.
+change it here too, or the edge build stops matching the release it is the edge
+of.
+
+That coupling is checked rather than merely asked for.
+[`scripts/check-edge-matches-release.sh`](scripts/check-edge-matches-release.sh)
+reads ptah's `.goreleaser.yaml` and requires the formula to still repeat it: the
+same three binaries, the same `buildinfo` ldflags, the same `CGO_ENABLED=0`, and
+`-trimpath` by way of `std_go_args`. The change that breaks it is made in the
+other repository, where nothing can see this file, so the check runs on a daily
+schedule as well as on every push here. It fails rather than skips when ptah's
+config cannot be read.
 
 ## Other ways to install Ptah
 

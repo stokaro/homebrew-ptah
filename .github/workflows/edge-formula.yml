@@ -1,0 +1,37 @@
+name: Edge formula
+
+# The drift this catches is made in another repository: someone changes how
+# stokaro/ptah builds a release, and the hand-written edge formula here keeps
+# repeating what the build used to do. Nothing in that pull request can see
+# this file, so the schedule is the trigger that matters and the others are
+# there to catch a change made here.
+#
+# No paths: filter, deliberately. A filtered workflow is absent on exactly the
+# runs that would have reddened it, and an absent check reads like a passing
+# one.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    name: edge formula matches the release build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      # The selftest first: a gate that cannot fail is not evidence, and this
+      # one is the only thing standing between the two files.
+      - name: The gate reports every drift it claims to
+        run: scripts/check-edge-matches-release-selftest.sh
+
+      - name: The edge formula matches the release build
+        run: scripts/check-edge-matches-release.sh
