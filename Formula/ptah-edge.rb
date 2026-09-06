@@ -33,9 +33,9 @@ one of the two: brew uninstall ptah before installing this one."
 
     ldflags = %W[
       -s -w
-      -X go.5x5.cz/ptah/internal/buildinfo.Version=#{version}
-      -X go.5x5.cz/ptah/internal/buildinfo.Commit=#{Utils.git_head}
-      -X go.5x5.cz/ptah/internal/buildinfo.Date=#{time.iso8601}
+      -X ptah.run/internal/buildinfo.Version=#{version}
+      -X ptah.run/internal/buildinfo.Commit=#{Utils.git_head}
+      -X ptah.run/internal/buildinfo.Date=#{time.iso8601}
     ]
 
     %w[ptah ptah-compat ptah-ls].each do |cmd|
