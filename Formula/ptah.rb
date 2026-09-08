@@ -5,13 +5,13 @@
 class Ptah < Formula
   desc "Ptah manages database change across schemas and persistent inference state"
   homepage "https://ptah.run"
-  version "0.4.0"
+  version "0.5.0"
   license "MIT"
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/stokaro/ptah/releases/download/v0.4.0/ptah_0.4.0_darwin_amd64.tar.gz"
-      sha256 "97233b0197335b8eab5a70fb35a46eada8fbc554e260ee071f1cc9b37d1710d4"
+      url "https://github.com/stokaro/ptah/releases/download/v0.5.0/ptah_0.5.0_darwin_amd64.tar.gz"
+      sha256 "76be5e7acfea02af379d35f163a441ed439a09fdc972b61a0f98aa22428a8ea7"
 
       define_method(:install) do
         bin.install "ptah"
@@ -20,8 +20,8 @@ class Ptah < Formula
       end
     end
     if Hardware::CPU.arm?
-      url "https://github.com/stokaro/ptah/releases/download/v0.4.0/ptah_0.4.0_darwin_arm64.tar.gz"
-      sha256 "9d3770db260d3f14857c886184ddf628f43b882f2533b60b166b4b9a362f7d92"
+      url "https://github.com/stokaro/ptah/releases/download/v0.5.0/ptah_0.5.0_darwin_arm64.tar.gz"
+      sha256 "252495d0d1098df30921e3281009390e170cfcd4c9ef24033dafb02bc922db64"
 
       define_method(:install) do
         bin.install "ptah"
@@ -33,8 +33,8 @@ class Ptah < Formula
 
   on_linux do
     if Hardware::CPU.intel? && Hardware::CPU.is_64_bit?
-      url "https://github.com/stokaro/ptah/releases/download/v0.4.0/ptah_0.4.0_linux_amd64.tar.gz"
-      sha256 "044f7f87220052848f839d0a062d2b7207dbd1759e863ea4a4c112010ab2759e"
+      url "https://github.com/stokaro/ptah/releases/download/v0.5.0/ptah_0.5.0_linux_amd64.tar.gz"
+      sha256 "e80a6490c60a27bb5204a90486ab59bac6b3f4f9f4efefd3a78453d1e1e57c37"
       define_method(:install) do
         bin.install "ptah"
         bin.install "ptah-compat"
@@ -42,8 +42,8 @@ class Ptah < Formula
       end
     end
     if Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-      url "https://github.com/stokaro/ptah/releases/download/v0.4.0/ptah_0.4.0_linux_arm64.tar.gz"
-      sha256 "8fddd584d57338a47f8bee90f861c7f672abd346ec46488446521bbd3a6e15f2"
+      url "https://github.com/stokaro/ptah/releases/download/v0.5.0/ptah_0.5.0_linux_arm64.tar.gz"
+      sha256 "3239ddd5efb1305d358261f93451ac693c4d23a8d81ecddc1a5e23374c673103"
       define_method(:install) do
         bin.install "ptah"
         bin.install "ptah-compat"
